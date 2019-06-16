@@ -4,8 +4,7 @@ Ext.define('TaskList.store.Tasks', {
 
     model: 'TaskList.model.Task',
 
-    pageSize: 50,
-    autoSync: true,
+    pageSize: 0,
 
     proxy: {
         type: 'rest',
@@ -15,6 +14,6 @@ Ext.define('TaskList.store.Tasks', {
         writer: {
             writeAllFields: true
         },
-        url: Constants.API_ADDRESS + 'api/'
+        url: ''
     }
 });

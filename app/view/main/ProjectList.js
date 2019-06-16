@@ -10,7 +10,7 @@ Ext.define('TaskList.view.main.ProjectList', {
     ],
 
     title: 'Projects',
-    iconCls: 'fa fa-folder-open',
+    iconCls: 'x-fa fa-folder-open',
     frame: true,
     sortableColumns: false,
 
@@ -21,8 +21,7 @@ Ext.define('TaskList.view.main.ProjectList', {
     plugins: [{
         ptype: 'rowediting',
         clicksToMoveEditor: 1,
-        autoCancel: false,
-        removeUnmodified: true
+        autoCancel: false
     }],
 
     columns: [
@@ -75,6 +74,7 @@ Ext.define('TaskList.view.main.ProjectList', {
     listeners: {
         select: 'onProjectSelect',
         deselect : 'onProjectDeselect',
-        edit: 'onProjectRecordEdit'
+        edit: 'onProjectRecordEdit',
+        canceledit: 'onRecordCancelEdit'
     }
 });

@@ -9,30 +9,37 @@ Ext.define('TaskList.view.main.MainController', {
 
     alias: 'controller.main',
 
-    onProjectSelect: function (rowModel, record, index, eOpts) {
+    onProjectSelect: function(rowModel, record, index, eOpts) {
         var taskListPanel = Ext.getCmp('taskListGrid');
         taskListPanel.setTitle('Tasks :: ' + record.get('title'));
 
         var taskListStore = taskListPanel.getStore();
-        taskListStore.getProxy().setUrl(Constants.API_ADDRESS + 'api/projects/' + record.get('id') + '/tasks/');
-        taskListStore.loadPage(1);
+        if (!isNaN(record.get('id'))) {
+            taskListStore.getProxy().setUrl(Constants.API_ADDRESS + 'api/projects/' + record.get('id') + '/tasks/');
+            taskListStore.loadPage(1);
+            this.lookupReference('addTaskButton').setDisabled(false);
+        }
 
         this.lookupReference('removeProjectButton').setDisabled(false);
         this.lookupReference('editProjectButton').setDisabled(false);
     },
 
-    onProjectDeselect: function (rowModel, records, index, eOpts) {
+    onProjectDeselect: function(rowModel, records, index, eOpts) {
         var taskListPanel = Ext.getCmp('taskListGrid');
         taskListPanel.setTitle('Tasks');
 
         var taskListStore = taskListPanel.getStore();
+        taskListStore.getProxy().setUrl('');
         taskListStore.loadData([], false);
 
         this.lookupReference('removeProjectButton').setDisabled(true);
         this.lookupReference('editProjectButton').setDisabled(true);
+        this.lookupReference('addTaskButton').setDisabled(true);
+        this.lookupReference('editTaskButton').setDisabled(true);
+        this.lookupReference('removeTaskButton').setDisabled(true);
     },
 
-    onLogoutButtonClick: function () {
+    onLogoutButtonClick: function(button, click) {
         var me = this;
 
         Ext.Ajax.request({
@@ -41,15 +48,10 @@ Ext.define('TaskList.view.main.MainController', {
 
             success: function(response, opts) {
                 // Remove the localStorage key/value
-                //localStorage.removeItem('UserLoggedIn');
+                localStorage.removeItem('User');
 
-                // Remove Main View
-                me.getView().destroy();
-
-                // Add the Login Window
-                Ext.create({
-                    xtype: 'login'
-                });
+                // Reload page
+                location.reload();
             },
 
             failure: function(response, opts) {
@@ -58,32 +60,42 @@ Ext.define('TaskList.view.main.MainController', {
         });
     },
 
-    onProjectRecordEdit: function(editor, event) {
-        var panel = Ext.getCmp('projectListGrid');
-        var store = panel.getStore();
+    onUserButtonClick: function(button, event) {
+        // Display user window
+        Ext.create({
+            xtype: 'user'
+        });
+    },
+
+    onProjectRecordEdit: function(editor, context, eOpts) {
+        var grid = context.grid;
+        var store = grid.getStore();
         store.sync({
             success: function(batch, options) {
                 store.loadPage(1, {
                     callback: function(records, operation, success) {
-                        panel.getSelectionModel().select(0);
+                        grid.getSelectionModel().select(0);
                     }
                 });
             },
             failure: function(batch, options) {
-                if (store.getAt(0).phantom === true) {
-                    store.removeAt(0);
+                if (isNaN(context.record.get('id'))) {
+                    context.record.drop();
                 }
                 else {
-                    var selection = panel.getSelection();
-                    if (selection.length > 0) {
-                        selection[0].reject();
-                    }
+                    context.record.reject();
                 }
 
                 var error = Ext.decode(batch.operations[0].error.response.responseText).message;
                 Ext.Msg.alert('Error', error);
             }
         });
+    },
+
+    onRecordCancelEdit: function(editor, context, eOpts) {
+        if (isNaN(context.record.get('id'))) {
+            context.record.drop();
+        }
     },
 
     onAddProjectButtonClick: function (button, opts) {
@@ -113,7 +125,7 @@ Ext.define('TaskList.view.main.MainController', {
                     selection[0].drop();
                     store.sync({
                         success: function (batch, options) {
-                            store.load();
+                            store.reload();
                         },
                         failure: function (batch, options) {
                             var error = Ext.decode(batch.operations[0].error.response.responseText).message;
@@ -125,8 +137,48 @@ Ext.define('TaskList.view.main.MainController', {
         }
     },
 
+    onTaskSelect: function (rowModel, record, index, eOpts) {
+        this.lookupReference('editTaskButton').setDisabled(false);
+        this.lookupReference('removeTaskButton').setDisabled(false);
+    },
+
+    onTaskDeselect: function (rowModel, records, index, eOpts) {
+        this.lookupReference('editTaskButton').setDisabled(true);
+        this.lookupReference('removeTaskButton').setDisabled(true);
+    },
+
+    onTaskRecordEdit: function(editor, context, eOpts) {
+        var grid = context.grid;
+        var store = grid.getStore();
+        store.sync({
+            success: function(batch, options) {
+                if (isNaN(context.record.get('id'))) {
+                    store.loadPage(1, {
+                        callback: function(records, operation, success) {
+                            grid.getSelectionModel().select(0);
+                        }
+                    });
+                }
+                else {
+                    store.reload();
+                    grid.getSelectionModel().select(context.record);
+                }
+            },
+            failure: function(batch, options) {
+                if (isNaN(context.record.get('id'))) {
+                    context.record.drop();
+                }
+                else {
+                    context.record.reject();
+                }
+
+                var error = Ext.decode(batch.operations[0].error.response.responseText).message;
+                Ext.Msg.alert('Error', error);
+            }
+        });
+    },
+
     onAddTaskButtonClick: function (button, opts) {
-        // TODO First add gives error
         var panel = button.up('maintasklist');
         var record = new TaskList.model.Task({});
         panel.getStore().insert(0, record);
@@ -145,17 +197,38 @@ Ext.define('TaskList.view.main.MainController', {
         var me = this;
 
         var panel = button.up('maintasklist');
+        var store = panel.getStore();
         var selection = panel.getSelection();
         if (selection.length > 0) {
             Ext.Msg.confirm('Remove task', 'Are you sure you want to remove task \'' + selection[0].get('title') + '\'?', function(btn) {
                 if (btn === 'yes') {
                     selection[0].drop();
+                    store.sync({
+                        success: function (batch, options) {
+                            store.reload();
+                        },
+                        failure: function (batch, options) {
+                            var error = Ext.decode(batch.operations[0].error.response.responseText).message;
+                            Ext.Msg.alert('Error', error);
+                        }
+                    });
                 }
             }, me);
         }
     },
 
-    // TODO Still not fully working...
+    onCompletedCheckChange: function(column, rowIndex, checked, record, event, eOpts) {
+        var store = column.up('maintasklist').getStore();
+        store.sync({
+            failure: function (batch, options) {
+                record.reject();
+
+                var error = Ext.decode(batch.operations[0].error.response.responseText).message;
+                Ext.Msg.alert('Error', error);
+            }
+        });
+    },
+
     onMoveUpTaskButtonClick: function(view, recIndex, cellIndex, item, e, record) {
         var store = view.getStore();
         var upperRecord = store.getAt(recIndex - 1);
@@ -164,6 +237,16 @@ Ext.define('TaskList.view.main.MainController', {
             var tempOrder = record.get('order');
             record.set('order', upperRecord.get('order'));
             upperRecord.set('order', tempOrder);
+
+            store.sync({
+                success: function (batch, options) {
+                    store.reload();
+                },
+                failure: function (batch, options) {
+                    var error = Ext.decode(batch.operations[0].error.response.responseText).message;
+                    Ext.Msg.alert('Error', error);
+                }
+            });
         }
     },
 
@@ -175,6 +258,16 @@ Ext.define('TaskList.view.main.MainController', {
             var tempOrder = record.get('order');
             record.set('order', lowerRecord.get('order'));
             lowerRecord.set('order', tempOrder);
+
+            store.sync({
+                success: function (batch, options) {
+                    store.reload();
+                },
+                failure: function (batch, options) {
+                    var error = Ext.decode(batch.operations[0].error.response.responseText).message;
+                    Ext.Msg.alert('Error', error);
+                }
+            });
         }
     }
 });

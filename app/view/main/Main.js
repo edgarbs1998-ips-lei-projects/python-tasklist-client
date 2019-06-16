@@ -8,6 +8,7 @@
 Ext.define('TaskList.view.main.Main', {
     extend: 'Ext.panel.Panel',
     xtype: 'app-main',
+    id: 'mainPanel',
 
     requires: [
         'Ext.plugin.Viewport',
@@ -22,22 +23,22 @@ Ext.define('TaskList.view.main.Main', {
 
     plugins: 'viewport',
 
-    ui: 'navigation',
     layout: 'border',
 
     header: {
-        layout: {
-            align: 'stretchmax'
-        },
-        iconCls: 'fa-tasks',
-        title: {
-            text: "TaskList",
-            flex: 0
-        },
+        iconCls: 'x-fa fa-tasks',
+        title: 'TaskList',
         items: [{
             xtype: 'button',
+            text: 'Name (username)',
+            itemId: 'userProfile',
+            handler: 'onUserButtonClick',
+            margin: '0 15 0 0',
+            tooltip: 'Edit user',
+            ui: 'default-toolbar',
+        }, {
+            xtype: 'button',
             text: 'Logout',
-            margin: '30 0',
             handler: 'onLogoutButtonClick'
         }]
     },

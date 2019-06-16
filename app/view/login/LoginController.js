@@ -21,8 +21,11 @@ Ext.define('TaskList.view.login.LoginController', {
         if (form.isValid()) {
             form.submit({
                 success: function(form, action) {
-                    // Set the localStorage value to true
-                    //localStorage.setItem("UserLoggedIn", true);
+                    var data = Ext.decode(action.response.responseText);
+                    var user = data.user;
+
+                    // Set the localStorage value to user data
+                    localStorage.setItem("User", Ext.encode(user));
 
                     // Remove Login Window
                     me.getView().destroy();
@@ -31,6 +34,9 @@ Ext.define('TaskList.view.login.LoginController', {
                     Ext.create({
                         xtype: 'app-main'
                     });
+
+                    // Set the username on the profile button
+                    Ext.getCmp('mainPanel').down('#userProfile').setText(user.name + ' (' + user.username + ')');
                 },
 
                 failure: function(form, action) {

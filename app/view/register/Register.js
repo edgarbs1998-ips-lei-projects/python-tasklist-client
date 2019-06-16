@@ -33,6 +33,7 @@ Ext.define('TaskList.view.register.Register', {
             padding: 10,
             fieldLabel: 'Name',
             allowBlank: false,
+            minLength: 3
         }, {
             xtype: 'textfield',
             name: 'email',
@@ -45,7 +46,8 @@ Ext.define('TaskList.view.register.Register', {
             name: 'username',
             padding: 10,
             fieldLabel: 'Username',
-            allowBlank: false
+            allowBlank: false,
+            minLength: 3
         }, {
             xtype: 'textfield',
             name: 'password',
