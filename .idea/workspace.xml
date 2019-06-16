@@ -3,15 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9763b258-9185-4ebd-bb2e-beb8001d1eff" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/app/Constants.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/Constants.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bootstrap.jsonp" beforeDir="false" afterPath="$PROJECT_DIR$/bootstrap.jsonp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/TaskList/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/TaskList/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/TaskList/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/TaskList/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/production/TaskList/app.jsonp" beforeDir="false" afterPath="$PROJECT_DIR$/build/production/TaskList/app.jsonp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/temp/development/TaskList/slicer-temp/bootstrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/temp/development/TaskList/slicer-temp/bootstrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/temp/development/TaskList/slicer-temp/bootstrap.jsonp" beforeDir="false" afterPath="$PROJECT_DIR$/build/temp/development/TaskList/slicer-temp/bootstrap.jsonp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/temp/production/TaskList/slicer-temp/bootstrap.json" beforeDir="false" afterPath="$PROJECT_DIR$/build/temp/production/TaskList/slicer-temp/bootstrap.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/temp/production/TaskList/slicer-temp/bootstrap.jsonp" beforeDir="false" afterPath="$PROJECT_DIR$/build/temp/production/TaskList/slicer-temp/bootstrap.jsonp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -23,7 +14,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/Constants.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -94,7 +95,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -189,6 +189,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -224,14 +225,16 @@
       <workItem from="1560691331786" duration="14369000" />
       <workItem from="1560709811510" duration="565000" />
       <workItem from="1560715483234" duration="652000" />
+      <workItem from="1560716944995" duration="516000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="47900000" />
+    <option name="totallyTimeSpent" value="48416000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.17860906" />
@@ -339,9 +342,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore" />
     <entry file="file://$PROJECT_DIR$/app/view/main/UserForm.js" />
     <entry file="file://$PROJECT_DIR$/app/view/main/Main.js">
       <provider selected="true" editor-type-id="text-editor">
@@ -438,7 +439,7 @@
     <entry file="file://$PROJECT_DIR$/app/Constants.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
-          <caret line="3" column="55" selection-start-line="3" selection-start-column="55" selection-end-line="3" selection-end-column="55" />
+          <caret line="3" column="25" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
         </state>
       </provider>
     </entry>
