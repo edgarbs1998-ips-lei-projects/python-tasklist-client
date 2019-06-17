@@ -22,7 +22,6 @@ Ext.define('TaskList.view.login.Login', {
     items: {
         xtype: 'form',
         reference: 'form',
-        url: Constants.API_ADDRESS + 'api/user/login/',
         defaults: {
             anchor: '100%'
         },

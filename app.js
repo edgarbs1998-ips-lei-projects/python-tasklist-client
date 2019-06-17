@@ -10,6 +10,7 @@ Ext.application({
 
     requires: [
         'Constants',
+        'TaskList.view.login.Login',
         'TaskList.view.main.Main'
     ],
 

@@ -25,15 +25,15 @@ Ext.define('TaskList.Application', {
 
     launch: function () {
         Ext.Ajax.request({
-            url: Constants.API_ADDRESS + 'api/user/',
+            url: Constants.API_ADDRESS + 'api/user',
+            withCredentials: true,
             method: 'GET',
 
             success: function(response, opts) {
                 var data = Ext.decode(response.responseText);
-                var user = data.user;
 
                 // Set the localStorage value to user data
-                localStorage.setItem("User", Ext.encode(user));
+                localStorage.setItem("User", response.responseText);
 
                 // Display main panel
                 Ext.create({
@@ -41,7 +41,7 @@ Ext.define('TaskList.Application', {
                 });
 
                 // Set the username on the profile button
-                Ext.getCmp('mainPanel').down('#userProfile').setText(user.name + ' (' + user.username + ')');
+                Ext.getCmp('mainPanel').down('#userProfile').setText(data.name + ' (' + data.username + ')');
             },
 
             failure: function(response, opts) {

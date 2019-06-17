@@ -15,7 +15,7 @@ Ext.define('TaskList.view.main.MainController', {
 
         var taskListStore = taskListPanel.getStore();
         if (!isNaN(record.get('id'))) {
-            taskListStore.getProxy().setUrl(Constants.API_ADDRESS + 'api/projects/' + record.get('id') + '/tasks/');
+            taskListStore.getProxy().setUrl(Constants.API_ADDRESS + 'api/projects/' + record.get('id') + '/tasks');
             taskListStore.loadPage(1);
             this.lookupReference('addTaskButton').setDisabled(false);
         }
@@ -43,7 +43,8 @@ Ext.define('TaskList.view.main.MainController', {
         var me = this;
 
         Ext.Ajax.request({
-            url: Constants.API_ADDRESS + 'api/user/logout/',
+            url: Constants.API_ADDRESS + 'api/user/logout',
+            withCredentials: true,
             method: 'POST',
 
             success: function(response, opts) {

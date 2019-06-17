@@ -24,7 +24,6 @@ Ext.define('TaskList.view.user.User', {
         xtype: 'form',
         reference: 'form',
         method: 'PUT',
-        url: Constants.API_ADDRESS + 'api/user/',
         defaults: {
             anchor: '100%'
         },

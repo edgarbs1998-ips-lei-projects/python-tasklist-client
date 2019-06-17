@@ -21,23 +21,34 @@ Ext.define('TaskList.view.user.UserController', {
     },
 
     onEditButtonClick: function(button, event) {
-        var form = button.up('form');
+        var form = button.up('form').getForm();
 
         if (form.isValid()) {
-            form.submit({
-                success: function(form, action) {
-                    var data = Ext.decode(action.response.responseText);
-                    var user = data.user;
+            Ext.Ajax.request({
+                url: Constants.API_ADDRESS + 'api/user',
+                withCredentials: true,
+                method: 'PUT',
+                params: {
+                    name: form.findField('name').getValue(),
+                    email: form.findField('email').getValue(),
+                    username: form.findField('username').getValue()
+                },
+
+                success: function(response, opts) {
+                    var data = Ext.decode(response.responseText);
 
                     // Set the localStorage value to user data
-                    localStorage.setItem("User", Ext.encode(user));
+                    localStorage.setItem("User", response.responseText);
+
+                    // Set the username on the profile button
+                    Ext.getCmp('mainPanel').down('#userProfile').setText(data.name + ' (' + data.username + ')');
 
                     Ext.Msg.alert('Success', 'Your account has been successfully edited.');
                 },
 
-                failure: function(form, action) {
-                    var data = Ext.decode(action.response.responseText);
-                    Ext.Msg.alert('Failed', data.message);
+                failure: function(response, opts) {
+                    var data = Ext.decode(response.responseText);
+                    Ext.Msg.alert('Failed', Ext.encode(data.message));
                 }
             });
         } else {
@@ -47,17 +58,25 @@ Ext.define('TaskList.view.user.UserController', {
 
     onUpdatePasswordButtonClick: function(button, event) {
         var me = this;
-        var form = button.up('form');
+
+        var form = button.up('form').getForm();
 
         if (form.isValid()) {
-            form.submit({
-                success: function(form, action) {
+            Ext.Ajax.request({
+                url: Constants.API_ADDRESS + 'api/user/password',
+                withCredentials: true,
+                method: 'PUT',
+                params: {
+                    password: form.findField('password').getValue()
+                },
+
+                success: function(response, opts) {
                     Ext.Msg.alert('Success', 'Your password has been successfully changed.', 'onChangePasswordSuccessAlert', me);
                 },
 
-                failure: function(form, action) {
+                failure: function(response, opts) {
                     var data = Ext.decode(action.response.responseText);
-                    Ext.Msg.alert('Failed', data.message);
+                    Ext.Msg.alert('Failed', Ext.encode(data.message));
                 }
             });
         } else {

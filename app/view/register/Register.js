@@ -22,7 +22,6 @@ Ext.define('TaskList.view.register.Register', {
     items: {
         xtype: 'form',
         reference: 'form',
-        url: Constants.API_ADDRESS + 'api/user/register/',
         defaults: {
             labelWidth: 150,
             anchor: '100%'

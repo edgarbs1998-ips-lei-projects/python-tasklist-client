@@ -23,7 +23,6 @@ Ext.define('TaskList.view.user.ChangePassword', {
         xtype: 'form',
         reference: 'form',
         method: 'PUT',
-        url: Constants.API_ADDRESS + 'api/user/password/',
         defaults: {
             labelWidth: 150,
             anchor: '100%'
